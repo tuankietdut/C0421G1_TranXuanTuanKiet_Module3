@@ -1,0 +1,23 @@
+B1: Xác định các thực thể có trong mô hình
+ - Thực thể phiếu xuất: với (primary key) là mã phiếu xuất, (data feild) là ngày xuất.
+ - Thực thể vật tư: với (primary key) là mã vật tư, (data feild) là tên vật tư.
+ - Thực thể phiếu nhập: với (primary key) là mã phiếu nhập, (data feild) là ngày nhập.
+ - Thực thể đơn đặt hàng: với (primary key) là mã số đơn hàng, (data feild) là ngày đặt hàng.
+ - Thực thể nhà cung cấp: với (primary key) là mã nhà cung cấp, (data feild) là tên nhà cung cấp, địa chỉ, và 1 data feild đa trị: số điện thoại 
+
+B2: Xác định các quan hệ
+ - Thực thể phiếu xuất và vật tư : quan hệ n-n
+ - Thực thể phiếu nhập và vật tư: quan hệ n-n
+ - Thực thể vật tư và đơn đặt hàng: quan hệ n-n
+ - Thực thể nhà cung cấp và đơn đặt hàng: quan hệ 1-n (1 nhà cung cấp có nhiều đơn đặt hàng)
+
+B3: Liệt kê các bảng được tạo ra sau khi chuyển đổi.
+ 1. Table phiếu xuất
+ 2. Table vật tư
+ 3. Table phiếu nhập
+ 4. Table đơn đặt hàng
+ 5. Table nhà cung cấp
+ 6. Table quan hệ n-n giữa phiếu xuất và vật tư
+ 7. Table quan hệ n-n giữa phiếu nhập và vật tư
+ 8. Table quan hệ n-n giữa vật tư và đơn đặt hàng.
+ 9. Table thuộc tính đa trị của nhà cung cấp: Số điện thoại
