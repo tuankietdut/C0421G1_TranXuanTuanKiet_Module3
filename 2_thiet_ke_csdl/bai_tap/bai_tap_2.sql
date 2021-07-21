@@ -1,3 +1,5 @@
+drop database if exists quan_ly_ban_hang;
+create database quan_ly_ban_hang;
 use quan_ly_ban_hang;
 
 create table customer(
@@ -22,9 +24,9 @@ foreign key (customer_id) references customer(customer_id)
 
 create table order_detail (
 orders_id int,
-customer_id int,
-order_detail_qty varchar(50),
+product_id int,
+order_detail_qty int,
 foreign key (orders_id) references orders(orders_id),
-foreign key (customer_id) references customer(customer_id),
-primary key (orders_id, customer_id)
+foreign key (product_id) references product(product_id),
+primary key (orders_id, product_id)
 );

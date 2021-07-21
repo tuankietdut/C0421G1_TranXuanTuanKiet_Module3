@@ -43,3 +43,11 @@ from order_detail odd inner join product pr on odd.product_id = pr.product_id
                 right join customer cu on ods.customer_id = cu.customer_id
 group by cu.customer_id
 having count(odd.orders_id) = 0;
+
+select odd.orders_id, ods.orders_date, sum(odd.order_detail_qty*pr.product_price) as total
+from order_detail odd inner join product pr on odd.product_id = pr.product_id
+					inner join orders ods on odd.orders_id = ods.orders_id
+group by odd.orders_id;
+						
+
+
