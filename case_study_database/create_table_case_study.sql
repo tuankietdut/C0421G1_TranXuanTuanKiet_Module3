@@ -60,8 +60,7 @@ ten_loai_dich_vu varchar(45)
 
 create table kieu_thue (
 id_kieu_thue int primary key auto_increment,
-ten_kieu_thue varchar(45),
-gia int
+ten_kieu_thue varchar(45)
 );
 
 create table dich_vu (
@@ -69,8 +68,8 @@ id_dich_vu int primary key auto_increment,
 ten_dich_vu varchar(45),
 dien_tich int,
 so_tang int,
-so_nguoi_toi_da varchar(45),
-chi_phi_thue varchar(45),
+so_nguoi_toi_da int,
+chi_phi_thue int,
 kieu_thue_id int,
 loai_dich_vu_id int,
 trang_thai varchar(45),
@@ -86,7 +85,6 @@ dich_vu_id int,
 ngay_lam_hop_dong date,
 ngay_ket_thuc date,
 tien_dat_coc int,
-tong_tien int,
 foreign key (nhan_vien_id) references nhan_vien(id_nhan_vien) on update cascade on delete cascade,
 foreign key (khach_hang_id) references khach_hang(id_khach_hang) on update cascade on delete cascade,
 foreign key (dich_vu_id) references dich_vu (id_dich_vu) on update cascade on delete cascade
@@ -97,7 +95,7 @@ create table dich_vu_di_kem (
 id_dich_vu_di_kem int primary key auto_increment,
 ten_dich_vu_di_kem varchar(45),
 gia int,
-don_vi int,
+don_vi varchar(45),
 trang_thai_kha_dung varchar(45)
 );
 
@@ -106,7 +104,8 @@ id_hop_dong_chi_tiet int primary key auto_increment,
 hop_dong_id int,
 dich_vu_di_kem_id int,
 so_luong int,
-foreign key (hop_dong_id) references hop_dong (id_hop_dong) on update cascade on delete cascade
+foreign key (hop_dong_id) references hop_dong (id_hop_dong) on update cascade on delete cascade,
+foreign key (dich_vu_di_kem_id) references dich_vu_di_kem (id_dich_vu_di_kem) on update cascade on delete cascade
 );
 
 
