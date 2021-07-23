@@ -29,7 +29,7 @@ group by kh.id_khach_hang;
 select dv.id_dich_vu, dv.ten_dich_vu, dv.dien_tich, dv.chi_phi_thue, ldv.ten_loai_dich_vu, hd.ngay_lam_hop_dong
 from dich_vu dv left join hop_dong hd on hd.dich_vu_id = dv.id_dich_vu
 				inner join loai_dich_vu ldv on dv.loai_dich_vu_id = ldv.id_loai_dich_vu
-where month(ngay_lam_hop_dong) not in (1 or 2 or 3) and year(ngay_lam_hop_dong) = 2019;
+where month(ngay_lam_hop_dong) not in (1, 2, 3) and year(ngay_lam_hop_dong) = 2019;
 
 -- 7. Dịch vụ đã book trong năm 2018 nhưng chưa từng được book trong 2019 
 select dv.id_dich_vu, dv.ten_dich_vu, dv.dien_tich, dv.so_nguoi_toi_da, dv.chi_phi_thue,ldv.ten_loai_dich_vu, hd.ngay_lam_hop_dong
@@ -67,7 +67,7 @@ select distinct ho_va_ten
  group by month(hd.ngay_lam_hop_dong)
  order by month_2019; 
  
--- 10. Hiển thị tương ứng mỗi dịch vụ đã sử dụng bao nhiêu dịch vụ đi kèm
+-- 10. Hiển thị tương ứng với từng hợp đồng đã sử dụng bao nhiêu lần dịch vụ đi kèm
  
  select hd.id_hop_dong, hd.ngay_lam_hop_dong, hd.ngay_ket_thuc, hd.tien_dat_coc, count(hdct.id_hop_dong_chi_tiet) as so_luong_dich_vu_da_su_dung
  from hop_dong hd inner join hop_dong_chi_tiet hdct on hd.id_hop_dong = hdct.hop_dong_id
@@ -82,8 +82,93 @@ select distinct ho_va_ten
                     inner join dich_vu_di_kem dvdk on hdct.dich_vu_di_kem_id = dvdk.id_dich_vu_di_kem
 where lk.ten_loai_khach = 'diamond' and kh.dia_chi = 'vinh';
 
--- 12. 
+-- 12. Hiển thị các thông tin idHopDong, Ten nhan vien, ten khach hàng,.... số lượng dịch vụ đi kèm, tổng tiền đặt cọc của tất cả dịch vụ 
+-- đặt vào 3 tháng cuối năm 2019 nhưng chưa từng đặt cọc vào 6 tháng đầu năm 2019
  
+select hdct.id_hop_dong_chi_tiet, nv.ho_va_ten_nhan_vien, kh.ho_va_ten, kh.so_dien_thoai, dv.ten_dich_vu, count(hdct.dich_vu_di_kem_id) as so_luong_dich_vu_di_kem, sum(hd.tien_dat_coc)
+from nhan_vien nv inner join hop_dong hd on hd.nhan_vien_id = nv.id_nhan_vien
+				  inner join khach_hang kh on kh.id_khach_hang = hd.khach_hang_id
+                  inner join dich_vu dv on hd.dich_vu_id = dv.id_dich_vu
+                  inner join hop_dong_chi_tiet hdct on hd.id_hop_dong = hdct.hop_dong_id
+                  inner join dich_vu_di_kem dvdk on dvdk.id_dich_vu_di_kem = hdct.dich_vu_di_kem_id
+where quarter(hd.ngay_lam_hop_dong) = 4 and quarter(hd.ngay_lam_hop_dong) not in (1 or 2 )
+group by hd.id_hop_dong;
+
+-- 13. Hiển thị dịch vụ đi kèm hiển thị nhiều nhất bởi các khách hàng đã đặt phòng
+
+select  dvdk.ten_dich_vu_di_kem ,count(hdct.hop_dong_id) as so_lan_dich_vu_di_kem_duoc_book
+from hop_dong_chi_tiet hdct inner join dich_vu_di_kem dvdk on  hdct.dich_vu_di_kem_id = dvdk.id_dich_vu_di_kem
+group by dvdk.id_dich_vu_di_kem
+having count(hdct.hop_dong_id)  >= all
+(
+select  count(hdct.hop_dong_id)
+from hop_dong_chi_tiet hdct inner join dich_vu_di_kem dvdk on  hdct.dich_vu_di_kem_id = dvdk.id_dich_vu_di_kem
+group by dvdk.id_dich_vu_di_kem
+);
+
+-- 14. Hiển thị các thông tin dịch vụ đi kèm mới chỉ được sử dụng 1 lần duy nhất
+
+select hdct.hop_dong_id, ldv.ten_loai_dich_vu, dvdk.ten_dich_vu_di_kem, count(hdct.hop_dong_id) as so_lan_su_dung
+from hop_dong_chi_tiet hdct inner join dich_vu_di_kem dvdk on hdct.dich_vu_di_kem_id = dvdk.id_dich_vu_di_kem
+							inner join hop_dong hd on hdct.hop_dong_id = hd.id_hop_dong
+                            inner join dich_vu dv on hd.dich_vu_id = dv.id_dich_vu
+                            inner join loai_dich_vu ldv on dv.loai_dich_vu_id = ldv.id_loai_dich_vu
+group by dvdk.id_dich_vu_di_kem
+having count(hdct.hop_dong_id) = 1;
+
+-- 15. Thông tin của nhân viên mới chỉ lập được tối đa 3 hợp đồng từ năm 2018 -> 2019
+
+select nv.id_nhan_vien, nv.ho_va_ten_nhan_vien, td.trinh_do, bp.ten_bo_phan, nv.so_dien_thoai, nv.dia_chi, count(hd.id_hop_dong) as so_lan_book
+from nhan_vien nv inner join hop_dong hd on hd.nhan_vien_id = nv.id_nhan_vien
+				inner join bo_phan bp on nv.bo_phan_id = bp.id_bo_phan
+                inner join trinh_do td on nv.trinh_do_id = td.id_trinh_do
+group by nv.id_nhan_vien
+having count(hd.id_hop_dong) <= 3;
+
+-- 16. Xóa nhân viên chưa từng lập hợp đồng nào từ 2017 -> 2019
+
+delete nv
+from nhan_vien nv inner join hop_dong hd on hd.nhan_vien_id = nv.id_nhan_vien
+where year(hd.ngay_lam_hop_dong) not in (2019, 2018, 2017);
+
+-- 17. Cập nhật khách hàng từ planium -> Diamond nếu tổng tiền thanh toán > 10tr trong năm 2019
+
+select kh.id_khach_hang, kh.ho_va_ten, sum(dv.chi_phi_thue), dvdk.gia ,sum(hdct.so_luong) as so_lan_su_dung , sum(dv.chi_phi_thue + dvdk.gia*hdct.so_luong) as total
+from khach_hang kh inner join hop_dong hd on hd.khach_hang_id = kh. id_khach_hang
+					inner join dich_vu dv on hd.dich_vu_id = dv.id_dich_vu
+                    inner join hop_dong_chi_tiet hdct on hdct.hop_dong_id = hd.id_hop_dong
+                    inner join dich_vu_di_kem dvdk on dvdk.id_dich_vu_di_kem = hdct.dich_vu_di_kem_id
+where year(hd.ngay_lam_hop_dong) = 2019
+group by kh.id_khach_hang
+having total >10;
+
+update khach_hang 
+set loai_khach_id = 1
+where loai_khach_id = 2 and id_khach_hang in 
+(
+select *
+from ( select kh.id_khach_hang
+			from khach_hang kh inner join hop_dong hd on hd.khach_hang_id = kh. id_khach_hang
+							inner join dich_vu dv on hd.dich_vu_id = dv.id_dich_vu
+							inner join hop_dong_chi_tiet hdct on hdct.hop_dong_id = hd.id_hop_dong
+							inner join dich_vu_di_kem dvdk on dvdk.id_dich_vu_di_kem = hdct.dich_vu_di_kem_id
+		where year(hd.ngay_lam_hop_dong) = 2019
+		group by kh.id_khach_hang
+		having sum(dv.chi_phi_thue + dvdk.gia*hdct.so_luong) >10
+	) kh2
+);
+
+-- 18 Xóa hợp đồng trước năm 2016 chú ý ràng buộc
+
+
+
+
+
+
+
+
+
+
 
 
 
