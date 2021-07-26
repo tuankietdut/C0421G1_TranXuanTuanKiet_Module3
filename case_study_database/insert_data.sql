@@ -90,12 +90,14 @@ update khach_hang
 set dia_chi = 'vinh'
 where id_khach_hang = 2;
 
+insert into hop_dong (nhan_vien_id, khach_hang_id, dich_vu_id, ngay_lam_hop_dong, ngay_ket_thuc, tien_dat_coc)
+values (3, 2, 4, '2015-01-15', '2015-01-23', 4);
 
--- select hd.id_hop_dong, hd.nhan_vien_id, nv.ho_va_ten_nhan_vien , hd.ngay_lam_hop_dong, count(hd.id_hop_dong) as so_lan_hop_dong_book_nhan_vien_nay
--- from hop_dong hd right join nhan_vien nv on hd.nhan_vien_id = nv.id_nhan_vien
--- group by nv.id_nhan_vien;
--- select * from khach_hang;
--- select * from hop_dong;
--- select * from nhan_vien;
+insert into nhan_vien (ho_va_ten_nhan_vien, vi_tri_id, trinh_do_id, bo_phan_id, ngay_sinh, so_id_card, luong, so_dien_thoai, email, dia_chi)
+values ('Juky_san', 1, 4, 3, '1995-10-10', '1918002135', '750', '01234259412', 'kanmfawfnsmk@gmail.com', 'hai_chau');
+
+insert into hop_dong (nhan_vien_id, khach_hang_id, dich_vu_id, ngay_lam_hop_dong, ngay_ket_thuc, tien_dat_coc)
+values (6, 3, 2, '2019-12-12', '2019-12-20', 5);
+
 
 
