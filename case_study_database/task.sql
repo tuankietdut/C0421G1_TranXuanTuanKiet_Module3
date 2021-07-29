@@ -1,7 +1,10 @@
 -- 2. Thông tin nhân viên có tên h k t và tối đa 15 ký tự
 select *
 from nhan_vien
-where (ho_va_ten_nhan_vien like '%h%' or '%k%' or '%t%') and length(ho_va_ten_nhan_vien) <16;
+where substring_index(ho_va_ten_nhan_vien, '_', -1) like 'h%' 
+		or substring_index(ho_va_ten_nhan_vien, '_', -1) like 's%'
+        or substring_index(ho_va_ten_nhan_vien, '_', -1) like 't%'  
+        and length(ho_va_ten_nhan_vien) <16;
 
 -- 3. Khách hàng ở quảng trị hoặc đà nẵng nằm trong độ tuổi 18-50
 select *
