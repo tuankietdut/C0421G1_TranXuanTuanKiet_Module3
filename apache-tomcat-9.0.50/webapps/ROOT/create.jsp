@@ -5,35 +5,34 @@
     <title>Title</title>
 </head>
 <body>
-    <h1>Create new Product</h1>
-    <p><a href="/product">Back to menu</a></p>
+    <h1>Create new user</h1>
+    <a href="/user">Back to menu</a>
+    <p style="color: darkseagreen">${msg}</p>
     <form method="post">
         <table>
+<%--            <tr>--%>
+<%--                <td>Id user</td>--%>
+<%--                <td><input type="number" name="idUser" value="${id}"></td>--%>
+<%--            </tr>--%>
             <tr>
-                <td>Nhập id sản phẩm</td>
-                <td><input type="text" name="idProduct"></td>
+                <td>Name user</td>
+                <td><input type="text" name="nameUser" ></td>
             </tr>
             <tr>
-                <td>Nhập tên sản phẩm</td>
-                <td><input type="text" name="nameProduct"></td>
+                <td>Email user</td>
+                <td><input type="text" name="emailUser" ></td>
+
             </tr>
             <tr>
-                <td>Nhập giá sản phẩm</td>
-                <td><input type="number" name="priceProduct"></td>
+                <td>Country user</td>
+                <td><input type="text" name="countryUser" ></td>
+
             </tr>
             <tr>
-                <td>Nhập mô tả sản phẩm</td>
-                <td><input type="text" name="desProduct"></td>
-            </tr>
-            <tr>
-                <td>Nhập nhà phân phối</td>
-                <td><input type="text" name="madeBy"></td>
-            </tr>
-            <tr>
-                <td colspan="2"><input type="submit" value="Create new Product"></td>
+                <td><input type="submit" value="Create new user"></td>
             </tr>
         </table>
+
     </form>
-    <p style="color: darkseagreen">${message}</p>
 </body>
 </html>
