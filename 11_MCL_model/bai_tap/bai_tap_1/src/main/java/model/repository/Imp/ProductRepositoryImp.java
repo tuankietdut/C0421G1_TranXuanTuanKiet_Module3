@@ -41,4 +41,15 @@ public class ProductRepositoryImp implements ProductRepository {
     public void deleteProduct(int id) {
         productMap.remove(id);
     }
+
+    @Override
+    public List<Product> findByName(String name) {
+        List<Product> productList = new ArrayList<>();
+        for (Product element: productMap.values()){
+            if (element.getNameProduct().equals(name)){
+                productList.add(element);
+            }
+        }
+        return productList;
+    }
 }

@@ -51,6 +51,9 @@ public class ProductServlet extends HttpServlet {
             case "view":
                 showView(request, response);
                 break;
+            case "findByName":
+                findByName(request, response);
+                break;
             default:
                 showMenu(request, response);
                 break;
@@ -167,6 +170,19 @@ public class ProductServlet extends HttpServlet {
         request.setAttribute("message", "Đã xóa sản phẩm");
         try {
             dispatcher.forward(request, response);
+        } catch (ServletException e) {
+            e.printStackTrace();
+        } catch (IOException exception) {
+            exception.printStackTrace();
+        }
+    }
+
+    private void findByName(HttpServletRequest request, HttpServletResponse response){
+        String nameProduct = request.getParameter("nameProduct");
+        request.setAttribute("product",this.productService.findByName(nameProduct));
+        RequestDispatcher dispatcher = request.getRequestDispatcher("list.jsp");
+        try {
+            dispatcher.forward(request,response);
         } catch (ServletException e) {
             e.printStackTrace();
         } catch (IOException exception) {

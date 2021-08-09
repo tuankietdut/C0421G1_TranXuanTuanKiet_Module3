@@ -27,5 +27,12 @@
             </tr>
         </c:forEach>
     </table>
+    <br>
+    <form>
+        <label >Input name Product</label>
+        <input type="hidden" name="action" value="findByName">
+        <input type="text" name="nameProduct">
+        <input type="submit" value="Lets go">
+    </form>
 </body>
 </html>
