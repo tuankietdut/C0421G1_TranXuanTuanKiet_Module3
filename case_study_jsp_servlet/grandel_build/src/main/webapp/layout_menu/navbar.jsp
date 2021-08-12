@@ -32,7 +32,13 @@
                     <a class="nav-link" href="/service">Service</a>
                 </li>
                 <li class="nav-item me-4">
-                    <a class="nav-link" href="#">Contract</a>
+                    <a class="nav-link" href="/contract">Contract</a>
+                </li>
+                <li class="nav-item me-4">
+                    <a class="nav-link" href="/contractDetail">Contract Detail</a>
+                </li>
+                <li class="nav-item me-4">
+                    <a class="nav-link" href="/customer_contract">Customer Contract</a>
                 </li>
             </ul>
             <form class="d-flex">

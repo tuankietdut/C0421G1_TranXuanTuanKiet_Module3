@@ -1,8 +1,14 @@
 package controller;
 
 import model.bean.Employee.Employee;
-import model.service.EmployeeService;
-import model.service.Imp.EmployeeServiceImp;
+import model.service.employee.DivisionService;
+import model.service.employee.EducationService;
+import model.service.employee.EmployeeService;
+import model.service.employee.Imp.DivisionServiceImp;
+import model.service.employee.Imp.EducationServiceImp;
+import model.service.employee.Imp.EmployeeServiceImp;
+import model.service.employee.Imp.PositionServiceImp;
+import model.service.employee.PositionService;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -14,6 +20,9 @@ import java.io.IOException;
 
 @WebServlet(name = "EmployeeServlet", urlPatterns = "/employee")
 public class EmployeeServlet extends HttpServlet {
+    private PositionService positionService = new PositionServiceImp();
+    private DivisionService divisionService = new DivisionServiceImp();
+    private EducationService educationService = new EducationServiceImp();
     private EmployeeService employeeService = new EmployeeServiceImp();
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String action = request.getParameter("action");
@@ -63,17 +72,19 @@ public class EmployeeServlet extends HttpServlet {
             }
     }
 
-    private void showCreat(HttpServletRequest request, HttpServletResponse response){
-        try {
-            response.sendRedirect("employee/create.jsp");
-        } catch (IOException exception) {
-            exception.printStackTrace();
-        }
+    private void showCreat(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
+            request.setAttribute("positionList", this.positionService.getList());
+            request.setAttribute("educationList", this.educationService.getList());
+            request.setAttribute("divisionList", this.divisionService.getList());
+            request.getRequestDispatcher("employee/create.jsp").forward(request, response);
     }
 
     private void showEdit(HttpServletRequest request, HttpServletResponse response){
         int id = Integer.parseInt(request.getParameter("id"));
         request.setAttribute("employee", this.employeeService.findById(id));
+        request.setAttribute("positionList", this.positionService.getList());
+        request.setAttribute("educationList", this.educationService.getList());
+        request.setAttribute("divisionList", this.divisionService.getList());
         try {
             request.getRequestDispatcher("employee/edit.jsp").forward(request, response);
         } catch (IOException exception) {
