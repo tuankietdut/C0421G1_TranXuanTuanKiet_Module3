@@ -12,7 +12,7 @@
         <div class="col-6">
             <img src="https://ncov.moh.gov.vn/o/corona-theme-guest/images/logo_byt.png" alt="Ảnh bộ y tế" height="78">
         </div>
-        <div class="col-6 text-end pe-5 pt-3">Nguyễn Văn A</div>
+        <div class="col-6 text-end pe-5 pt-3">${userNameLogin}</div>
     </div>
 </div>
 <div class="container-fluid">

@@ -17,6 +17,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Map;
 
 @WebServlet(name = "EmployeeServlet", urlPatterns = "/employee")
 public class EmployeeServlet extends HttpServlet {
@@ -128,15 +129,23 @@ public class EmployeeServlet extends HttpServlet {
         String division = request.getParameter("division");
 
         employee = new Employee(name, birthDay, idCard, salary, phone, mail, address, position, education, division);
+        Map<String, String> resultMap = this.employeeService.createEmployee(employee);
 
-        if (this.employeeService.createEmployee(employee)){
+
+        if (resultMap.get("result").equals("success")){
             try {
                 response.sendRedirect("/employee");
             } catch (IOException exception) {
                 exception.printStackTrace();
             }
         }else {
-            request.setAttribute("msg","Can not");
+            request.setAttribute("positionList", this.positionService.getList());
+            request.setAttribute("educationList", this.educationService.getList());
+            request.setAttribute("divisionList", this.divisionService.getList());
+            request.setAttribute("employee", employee);
+            request.setAttribute("errorPhone", resultMap.get("errorPhone"));
+            request.setAttribute("errorEmail", resultMap.get("errorEmail"));
+            request.setAttribute("errorIdCard", resultMap.get("errorIdCard"));
             try {
                 request.getRequestDispatcher("employee/create.jsp").forward(request,response);
             } catch (ServletException e) {
@@ -163,15 +172,19 @@ public class EmployeeServlet extends HttpServlet {
         String division = request.getParameter("division");
 
         employee = new Employee(id, name, birthDay, idCard, salary, phone, mail, address, position, education, division);
-        if (this.employeeService.editEmployee(employee)){
+        Map<String, String> resultMap = this.employeeService.editEmployee(employee);
+        if (resultMap.get("result").equals("success")){
             try {
                 response.sendRedirect("/employee");
             } catch (IOException exception) {
                 exception.printStackTrace();
             }
         }else {
+            request.setAttribute("employee", employee);
+            request.setAttribute("errorPhone", resultMap.get("errorPhone"));
+            request.setAttribute("errorEmail", resultMap.get("errorEmail"));
+            request.setAttribute("errorIdCard", resultMap.get("errorIdCard"));
             request.setAttribute("employee", this.employeeService.findById(id));
-            request.setAttribute("msg","Can not");
             try {
                 request.getRequestDispatcher("employee/edit.jsp").forward(request,response);
             } catch (ServletException e) {

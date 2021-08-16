@@ -16,6 +16,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Map;
 
 @WebServlet(name = "CustomerContractServlet", urlPatterns = "/customer_contract")
 public class CustomerContractServlet extends HttpServlet {
@@ -54,10 +55,18 @@ public class CustomerContractServlet extends HttpServlet {
                 break;
         }
 
-        if (this.serviceService.updateService(service)){
+        Map<String, String> resultMap = this.serviceService.updateService(service);
+
+        if (resultMap.get("result").equals("success")){
             request.setAttribute("customerContractList", this.customerContractService.getList());
             request.getRequestDispatcher("customer_contract/list.jsp").forward(request, response);
         }else {
+            request.setAttribute("errorCodeService", resultMap.get("errorCodeService"));
+            request.setAttribute("errorCost", resultMap.get("errorCost"));
+            request.setAttribute("errorPoolArea", resultMap.get("errorPoolArea"));
+            request.setAttribute("errorArea", resultMap.get("errorArea"));
+            request.setAttribute("errorFloor", resultMap.get("errorFloor"));
+            request.setAttribute("errorMaxPeople", resultMap.get("errorMaxPeople"));
             request.setAttribute("msg", "Can not update into");
             int id =Integer.parseInt(request.getParameter("id"));
             request.setAttribute("serviceObject", this.serviceService.findById(id));

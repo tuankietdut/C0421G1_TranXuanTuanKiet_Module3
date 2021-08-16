@@ -12,7 +12,7 @@
         <div class="col-6">
             <img src="https://ncov.moh.gov.vn/o/corona-theme-guest/images/logo_byt.png" alt="Ảnh bộ y tế" height="78">
         </div>
-        <div class="col-6 text-end pe-5 pt-3">Nguyễn Văn A</div>
+        <div class="col-6 text-end pe-5 pt-3">${userNameLogin}</div>
     </div>
 </div>
 <div class="container-fluid">
@@ -47,6 +47,7 @@
                         <th>Email</th>
                         <th>Address</th>
                         <th>typeCustomer</th>
+                        <th>Code Customer</th>
                         <th colspan="2">Action</th>
                     </tr>
                     </thead>
@@ -69,6 +70,7 @@
                             <td>${customer.email}</td>
                             <td>${customer.address}</td>
                             <td>${customer.typeCustomer}</td>
+                            <td>${customer.codeCustomer}</td>
                             <td>
                                 <a href="/customer?action=edit&id=${customer.id}" class="btn btn-danger">Edit</a>
                             </td>

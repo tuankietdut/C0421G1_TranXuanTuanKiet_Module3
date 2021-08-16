@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Map;
 
 @WebServlet(name = "CustomerServlet", urlPatterns = "/customer")
 public class CustomerServlet extends HttpServlet {
@@ -34,7 +35,7 @@ public class CustomerServlet extends HttpServlet {
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-            String action = request.getParameter("action");
+        String action = request.getParameter("action");
             if (action == null){
                 action = "";
             }
@@ -69,7 +70,7 @@ public class CustomerServlet extends HttpServlet {
     private void showCreat(HttpServletRequest request, HttpServletResponse response){
         request.setAttribute("customerType", this.customerTypeService.getList());
         try {
-            request.getRequestDispatcher("customer/create.jsp").forward(request, response);
+            request.getRequestDispatcher("customer/create2.jsp").forward(request, response);
         } catch (ServletException e) {
             e.printStackTrace();
         } catch (IOException exception) {
@@ -82,7 +83,7 @@ public class CustomerServlet extends HttpServlet {
         request.setAttribute("customer", this.customerService.findById(id));
         request.setAttribute("customerType", this.customerTypeService.getList());
         try {
-            request.getRequestDispatcher("customer/edit.jsp").forward(request, response);
+            request.getRequestDispatcher("customer/edit2.jsp").forward(request, response);
         } catch (ServletException e) {
             e.printStackTrace();
         } catch (IOException exception) {
@@ -100,19 +101,25 @@ public class CustomerServlet extends HttpServlet {
         String mail = request.getParameter("mail");
         String address = request.getParameter("address");
         String customerType = request.getParameter("customerType");
+        String codeCustomer = request.getParameter("codeCustomer");
 
-        customer = new Customer(name, birthDay, gender, idCard, phone,mail, address, customerType);
-
-        if (this.customerService.createCustomer(customer)){
+        customer = new Customer(name, birthDay, gender, idCard, phone,mail, address, customerType, codeCustomer);
+        Map<String, String> resultMap = this.customerService.createCustomer(customer);
+        if (resultMap.get("result").equals("success")){
             try {
                 response.sendRedirect("/customer");
             } catch (IOException exception) {
                 exception.printStackTrace();
             }
         }else {
-            request.setAttribute("msg","Can not");
+            request.setAttribute("customer", customer);
+            request.setAttribute("errorCodeCustomer", resultMap.get("errorCodeCustomer"));
+            request.setAttribute("errorPhone", resultMap.get("errorPhone"));
+            request.setAttribute("errorEmail", resultMap.get("errorEmail"));
+            request.setAttribute("errorIdCard", resultMap.get("errorIdCard"));
+            request.setAttribute("customerType", this.customerTypeService.getList());
             try {
-                request.getRequestDispatcher("customer/create.jsp").forward(request,response);
+                request.getRequestDispatcher("customer/create2.jsp").forward(request,response);
             } catch (ServletException e) {
                 e.printStackTrace();
             } catch (IOException exception) {
@@ -133,20 +140,26 @@ public class CustomerServlet extends HttpServlet {
         String mail = request.getParameter("mail");
         String address = request.getParameter("address");
         String customerType = request.getParameter("customerType");
+        String codeCustomer = request.getParameter("codeCustomer");
 
-        customer = new Customer(id, name, birthDay, gender, idCard, phone, mail, address, customerType);
-        if (this.customerService.editCustomer(customer)){
+        customer = new Customer(id, name, birthDay, gender, idCard, phone, mail, address, customerType, codeCustomer);
+        Map<String, String> resultMap = this.customerService.editCustomer(customer);
+        if (resultMap.get("result").equals("success")){
             try {
                 response.sendRedirect("/customer");
             } catch (IOException exception) {
                 exception.printStackTrace();
             }
         }else {
+            request.setAttribute("errorCodeCustomer", resultMap.get("errorCodeCustomer"));
+            request.setAttribute("errorPhone", resultMap.get("errorPhone"));
+            request.setAttribute("errorEmail", resultMap.get("errorEmail"));
+            request.setAttribute("errorIdCard", resultMap.get("errorIdCard"));
             request.setAttribute("customer", this.customerService.findById(id));
             request.setAttribute("customerType", this.customerTypeService.getList());
             request.setAttribute("msg","Can not");
             try {
-                request.getRequestDispatcher("customer/edit.jsp").forward(request,response);
+                request.getRequestDispatcher("customer/edit2.jsp").forward(request,response);
             } catch (ServletException e) {
                 e.printStackTrace();
             } catch (IOException exception) {

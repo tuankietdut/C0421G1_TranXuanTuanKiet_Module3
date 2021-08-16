@@ -67,6 +67,12 @@
             </td>
         </tr>
         <tr>
+            <td>Code Customer:</td>
+            <td>
+                <input type="text" name="codeCustomer">
+            </td>
+        </tr>
+        <tr>
             <td colspan="2">
                 <button type="submit">Create</button>
             </td>

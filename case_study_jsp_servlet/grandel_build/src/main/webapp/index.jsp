@@ -12,7 +12,7 @@
             <div class="col-6">
                 <img src="https://ncov.moh.gov.vn/o/corona-theme-guest/images/logo_byt.png" alt="Ảnh bộ y tế" height="78">
             </div>
-            <div class="col-6 text-end pe-5 pt-3">Nguyễn Văn A</div>
+            <div class="col-6 text-end pe-5 pt-3"></div>
         </div>
     </div>
     <div class="container-fluid">
@@ -29,6 +29,21 @@
                 Body in here
 
 
+                <form action="/login">
+                    <div class="mb-3">
+                        <label for="userName" class="form-label">User name</label>
+                        <input type="text" class="form-control" id="userName" name="userName" value="${username}">
+                    </div>
+                    <div class="mb-3">
+                        <label for="password" class="form-label">Password</label>
+                        <input type="password" class="form-control" id="password" name="password" value="${password}">
+                    </div>
+<%--                    <div class="mb-3 form-check">--%>
+<%--                        <input type="checkbox" class="form-check-input" id="exampleCheck1">--%>
+<%--                        <label class="form-check-label" for="exampleCheck1">Remember me</label>--%>
+<%--                    </div>--%>
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </form>
 
             </div>
         </div>

@@ -12,7 +12,7 @@
         <div class="col-6">
             <img src="https://ncov.moh.gov.vn/o/corona-theme-guest/images/logo_byt.png" alt="Ảnh bộ y tế" height="78">
         </div>
-        <div class="col-6 text-end pe-5 pt-3">Nguyễn Văn A</div>
+        <div class="col-6 text-end pe-5 pt-3">${userNameLogin}</div>
     </div>
 </div>
 <div class="container-fluid">
@@ -52,21 +52,29 @@
                 <div class="mb-3">
                     <label for="Service_name" class="form-label">Service_name</label>
                     <input type="text" class="form-control" id="Service_name" name="Service_name" value="${serviceObject.name}">
+                    <div class="form-text text-danger">${errorCodeService}</div>
+
                 </div>
 
                 <div class="mb-3">
                     <label for="Service_area" class="form-label">Service_area</label>
                     <input type="number" class="form-control" id="Service_area" name="Service_area" value="${serviceObject.area}">
+                    <div class="form-text text-danger">${errorArea}</div>
+
                 </div>
 
                 <div class="mb-3">
                     <label for="service_cost" class="form-label">Service_cost</label>
                     <input type="number" class="form-control" id="service_cost" name="service_cost" value="${serviceObject.cost}">
+                    <div class="form-text text-danger">${errorCost}</div>
+
                 </div>
 
                 <div class="mb-3">
                     <label for="service_max_people" class="form-label">Service_max_people</label>
                     <input type="number" class="form-control" id="service_max_people" name="service_max_people" value="${serviceObject.maxPeople}">
+                    <div class="form-text text-danger">${errorMaxPeople}</div>
+
                 </div>
 
                 <div class="mb-3">
@@ -82,11 +90,15 @@
                 <div class="mb-3">
                     <label for="pool_area" class="form-label">Pool_area</label>
                     <input type="number" class="form-control" id="pool_area" name="pool_area" value="${serviceObject.poolArea}">
+                    <div class="form-text text-danger">${errorPoolArea}</div>
+
                 </div>
 
                 <div class="mb-3">
                     <label for="number_of_floors" class="form-label">Number_of_floors</label>
                     <input type="number" class="form-control" id="number_of_floors" name="number_of_floors" value="${serviceObject.floor}">
+                    <div class="form-text text-danger">${errorFloor}</div>
+
                 </div>
 
                 <div class="mb-3">

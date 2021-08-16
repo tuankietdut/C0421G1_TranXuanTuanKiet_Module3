@@ -25,7 +25,8 @@ public class CustomerRepositoryImp implements CustomerRepository {
 
         if (connection != null) {
             try {
-                statement = connection.prepareStatement("select customer_id, customer_name, customer_birthday, customer_gender, customer_id_card, customer_phone, customer_email, customer_adress, customer_type_name\n" +
+                statement = connection.prepareStatement("select customer_id, customer_name, customer_birthday, customer_gender," +
+                        " customer_id_card, customer_phone, customer_email, customer_adress, customer_type_name, code_customer\n" +
                         "from customer c inner join customer_type ct on c.customer_type_id = ct.customer_type_id;");
                 resultSet = statement.executeQuery();
 
@@ -41,8 +42,9 @@ public class CustomerRepositoryImp implements CustomerRepository {
                     String email = resultSet.getString("customer_email");
                     String customer_adress = resultSet.getString("customer_adress");
                     String customer_type_name = resultSet.getString("customer_type_name");
+                    String codeCustomer = resultSet.getString("code_customer");
 
-                    customer = new Customer(id, name, birthDay, gender, idCard, phone, email, customer_adress, customer_type_name);
+                    customer = new Customer(id, name, birthDay, gender, idCard, phone, email, customer_adress, customer_type_name, codeCustomer);
                     customerList.add(customer);
                 }
             } catch (SQLException throwables) {
@@ -73,8 +75,8 @@ public class CustomerRepositoryImp implements CustomerRepository {
         if (connection != null) {
             try {
                 statement = connection.prepareStatement("insert into customer (customer_name, customer_birthday, customer_gender," +
-                        " customer_id_card, customer_phone, customer_email, customer_adress, customer_type_id)\n" +
-                        "values (?, ?, ?, ?, ?, ?, ?, ?);");
+                        " customer_id_card, customer_phone, customer_email, customer_adress, customer_type_id, code_customer)\n" +
+                        "values (?, ?, ?, ?, ?, ?, ?, ? ,? );");
                 statement.setString(1, customer.getName());
                 statement.setString(2, customer.getBirthday());
                 statement.setInt(3, customer.getGender());
@@ -83,6 +85,7 @@ public class CustomerRepositoryImp implements CustomerRepository {
                 statement.setString(6, customer.getEmail());
                 statement.setString(7, customer.getAddress());
                 statement.setString(8, customer.getTypeCustomer());
+                statement.setString(9, customer.getCodeCustomer());
                 statement.executeUpdate();
                 return true;
             } catch (SQLException throwables) {
@@ -101,7 +104,7 @@ public class CustomerRepositoryImp implements CustomerRepository {
         try {
             PreparedStatement preparedStatement = connection.prepareStatement("update customer\n" +
                     "set  customer_name = ?, customer_birthday =?, customer_gender =?, customer_id_card =?," +
-                    " customer_phone =?, customer_email =?, customer_adress =?, customer_type_id =?\n" +
+                    " customer_phone =?, customer_email =?, customer_adress =?, customer_type_id =?, code_customer =?\n" +
                     "where customer_id = ?;");
 
             preparedStatement.setString(1, customer.getName());
@@ -112,7 +115,8 @@ public class CustomerRepositoryImp implements CustomerRepository {
             preparedStatement.setString(6, customer.getEmail());
             preparedStatement.setString(7, customer.getAddress());
             preparedStatement.setString(8, customer.getTypeCustomer());
-            preparedStatement.setInt(9, customer.getId());
+            preparedStatement.setString(9, customer.getCodeCustomer());
+            preparedStatement.setInt(10, customer.getId());
             preparedStatement.executeUpdate();
             return true;
         } catch (SQLException throwables) {
@@ -154,7 +158,7 @@ public class CustomerRepositoryImp implements CustomerRepository {
         if (connection != null) {
             try {
                 statement = connection.prepareStatement("select customer_id, customer_name, customer_birthday, customer_gender," +
-                        " customer_id_card, customer_phone, customer_email, customer_adress, customer_type_name\n" +
+                        " customer_id_card, customer_phone, customer_email, customer_adress, customer_type_name, code_customer\n" +
                         "from customer c inner join customer_type ct on c.customer_type_id = ct.customer_type_id\n" +
                         "where customer_id = ?;");
                 statement.setInt(1, id);
@@ -170,8 +174,9 @@ public class CustomerRepositoryImp implements CustomerRepository {
                     String email = resultSet.getString("customer_email");
                     String customer_adress = resultSet.getString("customer_adress");
                     String customer_type_name = resultSet.getString("customer_type_name");
+                    String codeCustomer = resultSet.getString("code_customer");
 
-                    customer = new Customer(id, name, birthDay, gender, idCard, phone, email, customer_adress, customer_type_name);
+                    customer = new Customer(id, name, birthDay, gender, idCard, phone, email, customer_adress, customer_type_name, codeCustomer);
                 }
             } catch (SQLException throwables) {
                 throwables.printStackTrace();
@@ -190,6 +195,6 @@ public class CustomerRepositoryImp implements CustomerRepository {
             }
         }
         return customer;
-
     }
 }
+
